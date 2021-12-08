@@ -1,0 +1,2 @@
+CH100_Interpreter.c:10:6:crc16_update	48	static
+CH100_Interpreter.c:33:5:CH100_FBdecoder	48	static
