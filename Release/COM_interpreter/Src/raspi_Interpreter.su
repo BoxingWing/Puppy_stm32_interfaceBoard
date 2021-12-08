@@ -1,0 +1,2 @@
+raspi_Interpreter.c:10:5:raspiCMDdecoder	40	static
+raspi_Interpreter.c:70:6:genAngleBackCmd	32	static
