@@ -26,10 +26,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- D:/STM32_Projects/FourLineSerial/COM_interpreter/Inc/Servo_Interpreter.h \
- D:/STM32_Projects/FourLineSerial/COM_interpreter/Inc/raspi_Interpreter.h \
- D:/STM32_Projects/FourLineSerial/COM_interpreter/Inc/JY901_Interpreter.h \
- D:/STM32_Projects/FourLineSerial/COM_interpreter/Inc/CH100_Interpreter.h
+ E:/Puppy_stm32_interfaceBoard/COM_interpreter/Inc/Servo_Interpreter.h \
+ E:/Puppy_stm32_interfaceBoard/COM_interpreter/Inc/raspi_Interpreter.h \
+ E:/Puppy_stm32_interfaceBoard/COM_interpreter/Inc/JY901_Interpreter.h \
+ E:/Puppy_stm32_interfaceBoard/COM_interpreter/Inc/CH100_Interpreter.h
 
 ../Core/Inc/main.h:
 
@@ -87,10 +87,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 
-D:/STM32_Projects/FourLineSerial/COM_interpreter/Inc/Servo_Interpreter.h:
+E:/Puppy_stm32_interfaceBoard/COM_interpreter/Inc/Servo_Interpreter.h:
 
-D:/STM32_Projects/FourLineSerial/COM_interpreter/Inc/raspi_Interpreter.h:
+E:/Puppy_stm32_interfaceBoard/COM_interpreter/Inc/raspi_Interpreter.h:
 
-D:/STM32_Projects/FourLineSerial/COM_interpreter/Inc/JY901_Interpreter.h:
+E:/Puppy_stm32_interfaceBoard/COM_interpreter/Inc/JY901_Interpreter.h:
 
-D:/STM32_Projects/FourLineSerial/COM_interpreter/Inc/CH100_Interpreter.h:
+E:/Puppy_stm32_interfaceBoard/COM_interpreter/Inc/CH100_Interpreter.h:

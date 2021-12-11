@@ -144,11 +144,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	if (huart->Instance==UART5)
 		uartRxFlag[3]=1;
 	if (huart->Instance==UART4)
-	//{uartRxFlag[4]=1;};
-	//	{HAL_UART_Receive_DMA(&huart4, imuRecData,33);uartRxFlag[4]=1;JY901_FBdecoder(imuRecData, accData, omegaData, rpyData, IMU_data);} // for JY901
-	{//HAL_UART_Receive_DMA(&huart4, imuRecData_CH100,164);
+	{
+		HAL_UART_Receive_DMA(&huart4, imuRecData,33);uartRxFlag[4]=1;JY901_FBdecoder(imuRecData, accData, omegaData, rpyData, IMU_data);} // for JY901
+	/*{//HAL_UART_Receive_DMA(&huart4, imuRecData_CH100,164);
 	uartRxFlag[4]=1;
-	CH100_FBdecoder(imuRecData_CH100, accData_CH100, omegaData_CH100, quatData_CH100, IMU_CH100_data);} // for CH100
+	CH100_FBdecoder(imuRecData_CH100, accData_CH100, omegaData_CH100, quatData_CH100, IMU_CH100_data);} // for CH100*/
 }
 
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
@@ -199,12 +199,12 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   int ii=0;
-  //uint8_t imu_unlock[5];
+  uint8_t imu_unlock[5];
   for (ii=0;ii<60;ii++)
   	spiSendData[ii]=0;
   uartTxFlag[0]=1;uartTxFlag[1]=1;uartTxFlag[2]=1;uartTxFlag[3]=1;uartTxFlag[4]=1;
   uartRxFlag[0]=1;uartRxFlag[1]=1;uartRxFlag[2]=1;uartRxFlag[3]=1;uartRxFlag[4]=1;
-  //imu_unlock[0]=0xff;imu_unlock[1]=0xaa;imu_unlock[2]=0x69;imu_unlock[3]=0x88;imu_unlock[4]=0xb5;
+  imu_unlock[0]=0xff;imu_unlock[1]=0xaa;imu_unlock[2]=0x69;imu_unlock[3]=0x88;imu_unlock[4]=0xb5;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -235,14 +235,14 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(LED_Onboard_GPIO_Port, LED_Onboard_Pin,GPIO_PIN_SET);
   //HAL_GPIO_WritePin(WorkState_GPIO_Port, WorkState_Pin,GPIO_PIN_RESET);
-  HAL_SPI_TransmitReceive_DMA(&hspi1, spiSendData_CH100, spiRecData_CH100, 79);
+  HAL_SPI_TransmitReceive_DMA(&hspi1, spiSendData, spiRecData, 60);
 
   HAL_UART_Receive_DMA(&huart1, servoAngleRecCmdL1, 8);
   HAL_UART_Receive_DMA(&huart2, servoAngleRecCmdL2, 8);
   HAL_UART_Receive_DMA(&huart3, servoAngleRecCmdL3, 8);
   HAL_UART_Receive_DMA(&huart5, servoAngleRecCmdL4, 8);
 
-  /*// IMU initialization for JY901
+  // IMU initialization for JY901
   uartRxFlag[4]=0;
   HAL_UART_Transmit(&huart4, imu_unlock,5,1000);
   HAL_Delay(20);
@@ -256,7 +256,7 @@ int main(void)
   HAL_UART_Receive_DMA(&huart4, imuRecData,33);
   JY901_genAskCmd(imuAskData,200); // for 200 Hz continuous output
   HAL_UART_Transmit(&huart4, imuAskData,5,1000);
-  HAL_Delay(20);*/
+  HAL_Delay(20);
 
   //IMU initialization for CH100
  /* uartRxFlag[4]=0;
@@ -266,8 +266,8 @@ int main(void)
   HAL_Delay(20);
   HAL_UART_Receive_DMA(&huart4, imuRecData_CH100,164);
   HAL_UART_Transmit(&huart4, startTrans,11,1000);
-  HAL_Delay(20);*/
-  HAL_UART_Receive_DMA(&huart4, imuRecData_CH100,164);
+  HAL_Delay(20);
+  HAL_UART_Receive_DMA(&huart4, imuRecData_CH100,164);*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -292,7 +292,8 @@ int main(void)
 		  readFinish=0;
 		  volatile int i;
 		  double angleres;
-		  raspiRecErr=raspiCMDdecoder_CH100(spiRecData_CH100, &raspiReadFlag, &raspiSetFlag, servoIDarray, &servoNum,servoAngleSet,&lineIdx);
+		  //raspiRecErr=raspiCMDdecoder_CH100(spiRecData_CH100, &raspiReadFlag, &raspiSetFlag, servoIDarray, &servoNum,servoAngleSet,&lineIdx);
+		  raspiRecErr=raspiCMDdecoder(spiRecData, &raspiReadFlag, &raspiSetFlag, servoIDarray, &servoNum,servoAngleSet,&lineIdx);
 		  lineFlag[0]=0;lineFlag[1]=0;lineFlag[2]=0;lineFlag[3]=0;
 		  if (lineIdx==1)
 				  lineFlag[0]=1;
@@ -439,7 +440,8 @@ int main(void)
 		  }
 		  readFinish=1;
 
-		  genAngleBackCmd_CH100(servoIDarray, servoNum,servoAngleRead, spiSendData_CH100, IMU_CH100_data);
+		  //genAngleBackCmd_CH100(servoIDarray, servoNum,servoAngleRead, spiSendData_CH100, IMU_CH100_data);
+		  genAngleBackCmd(servoIDarray, servoNum,servoAngleRead, spiSendData, IMU_data);
 		  getRaspiCMD=0;
 		  //HAL_SPI_TransmitReceive_DMA(&hspi1, spiSendData_CH100, spiRecData_CH100, 79);
 
@@ -757,10 +759,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
