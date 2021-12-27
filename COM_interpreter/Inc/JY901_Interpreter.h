@@ -12,5 +12,6 @@
 
 void JY901_genAskCmd(uint8_t *cmd, int fre);
 int JY901_FBdecoder(uint8_t *recData, uint8_t *accData, uint8_t *omegaData, uint8_t *rpyData, uint8_t *IMU_data);
+int JY901_FBdecoderBuf2x(uint8_t *recData, uint8_t *recData2x, uint8_t *accData, uint8_t *omegaData, uint8_t *rpyData, uint8_t *IMU_data);
 
 #endif /* INC_JY901_INTERPRETER_H_ */

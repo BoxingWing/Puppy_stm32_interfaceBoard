@@ -1,2 +1,3 @@
 JY901_Interpreter.c:10:6:JY901_genAskCmd	16	static
 JY901_Interpreter.c:25:5:JY901_FBdecoder	32	static
+JY901_Interpreter.c:91:5:JY901_FBdecoderBuf2x	72	static

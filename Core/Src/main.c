@@ -103,6 +103,7 @@ uint8_t servoAngleRecCmdL1[8],servoAngleRecCmdL2[8],servoAngleRecCmdL3[8],servoA
 uint8_t servoAngleSetCmdL1[12],servoAngleSetCmdL2[12],servoAngleSetCmdL3[12],servoAngleSetCmdL4[12];
 uint8_t servoNum;
 uint8_t imuRecData[33];
+uint8_t imuRecDataBuf2x[66];
 uint8_t imuRecData_CH100[164];
 uint8_t imuAskData[5];
 uint8_t accData[6], omegaData[6],rpyData[6];
@@ -145,7 +146,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		uartRxFlag[3]=1;
 	if (huart->Instance==UART4)
 	{
-		HAL_UART_Receive_DMA(&huart4, imuRecData,33);uartRxFlag[4]=1;JY901_FBdecoder(imuRecData, accData, omegaData, rpyData, IMU_data);} // for JY901
+		HAL_UART_Receive_DMA(&huart4, imuRecData,33);
+		uartRxFlag[4]=1;
+		//JY901_FBdecoder(imuRecData, accData, omegaData, rpyData, IMU_data);
+		JY901_FBdecoderBuf2x(imuRecData,imuRecDataBuf2x,accData, omegaData, rpyData, IMU_data);
+	} // for JY901
 	/*{//HAL_UART_Receive_DMA(&huart4, imuRecData_CH100,164);
 	uartRxFlag[4]=1;
 	CH100_FBdecoder(imuRecData_CH100, accData_CH100, omegaData_CH100, quatData_CH100, IMU_CH100_data);} // for CH100*/
@@ -199,12 +204,14 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   int ii=0;
-  uint8_t imu_unlock[5];
+
+  //uint8_t imu_unlock[5];
+  //imu_unlock[0]=0xff;imu_unlock[1]=0xaa;imu_unlock[2]=0x69;imu_unlock[3]=0x88;imu_unlock[4]=0xb5;
+
   for (ii=0;ii<60;ii++)
   	spiSendData[ii]=0;
   uartTxFlag[0]=1;uartTxFlag[1]=1;uartTxFlag[2]=1;uartTxFlag[3]=1;uartTxFlag[4]=1;
   uartRxFlag[0]=1;uartRxFlag[1]=1;uartRxFlag[2]=1;uartRxFlag[3]=1;uartRxFlag[4]=1;
-  imu_unlock[0]=0xff;imu_unlock[1]=0xaa;imu_unlock[2]=0x69;imu_unlock[3]=0x88;imu_unlock[4]=0xb5;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -243,20 +250,24 @@ int main(void)
   HAL_UART_Receive_DMA(&huart5, servoAngleRecCmdL4, 8);
 
   // IMU initialization for JY901
-  uartRxFlag[4]=0;
+  /*uartRxFlag[4]=0;
   HAL_UART_Transmit(&huart4, imu_unlock,5,1000);
-  HAL_Delay(20);
+  HAL_Delay(100);
   HAL_UART_Receive_DMA(&huart4, imuRecData,33);
-  JY901_genAskCmd(imuAskData,1); // for single time output, to clear the uart
+  JY901_genAskCmd(imuAskData,200); // for single time output, to clear the uart
   HAL_UART_Transmit(&huart4, imuAskData,5,1000);
-  HAL_Delay(20);
+  HAL_Delay(100);
   while(uartRxFlag[4]==0);
 
   uartRxFlag[4]=0;
   HAL_UART_Receive_DMA(&huart4, imuRecData,33);
+  HAL_UART_Transmit(&huart4, imu_unlock,5,1000);
   JY901_genAskCmd(imuAskData,200); // for 200 Hz continuous output
   HAL_UART_Transmit(&huart4, imuAskData,5,1000);
-  HAL_Delay(20);
+  HAL_Delay(100);
+  while(uartRxFlag[4]==0);*/
+
+  HAL_UART_Receive_DMA(&huart4, imuRecData,33);
 
   //IMU initialization for CH100
  /* uartRxFlag[4]=0;
